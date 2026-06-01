@@ -1,13 +1,16 @@
 export const dynamic = 'force-dynamic';
 import { createClient } from "@supabase/supabase-js";
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-);
+function getSupabase() {
+  return createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  );
+}
 
 // GET all automations
 export async function GET() {
+  const supabase = getSupabase();  // ← added
   const { data, error } = await supabase
     .from("automations")
     .select("*")
@@ -19,6 +22,7 @@ export async function GET() {
 
 // POST create automation
 export async function POST(req) {
+  const supabase = getSupabase();  // ← added
   const body = await req.json();
 
   const { data, error } = await supabase
@@ -45,6 +49,7 @@ export async function POST(req) {
 
 // PATCH toggle active
 export async function PATCH(req) {
+  const supabase = getSupabase();  // ← added
   const body = await req.json();
   const { data, error } = await supabase
     .from("automations")
@@ -59,6 +64,7 @@ export async function PATCH(req) {
 
 // DELETE
 export async function DELETE(req) {
+  const supabase = getSupabase();  // ← added
   const { id } = await req.json();
   const { error } = await supabase
     .from("automations")
